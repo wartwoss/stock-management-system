@@ -1,4 +1,3 @@
-
 <?php
 namespace App\Domain\Inventory\Models;
 use Illuminate\Database\Eloquent\Model;

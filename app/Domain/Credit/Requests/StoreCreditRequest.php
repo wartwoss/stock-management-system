@@ -1,5 +1,5 @@
-
 <?php
+
 namespace App\Domain\Credit\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 class StoreCreditRequest extends FormRequest

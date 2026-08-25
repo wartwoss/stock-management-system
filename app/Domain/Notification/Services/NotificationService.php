@@ -1,4 +1,3 @@
-
 <?php
 namespace App\Domain\Notification\Services;
 use App\Domain\Credit\Models\Credit;

@@ -1,4 +1,3 @@
-
 <?php
 namespace App\Domain\Inventory\Requests;
 use Illuminate\Foundation\Http\FormRequest;

@@ -1,4 +1,3 @@
-
 <?php
 namespace App\Domain\Credit\Requests;
 use Illuminate\Foundation\Http\FormRequest;
