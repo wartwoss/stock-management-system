@@ -26,7 +26,6 @@ class StoreSaleRequest extends FormRequest
                 'integer',
                 'exists:customers,id',
                 'required_if:payment_type,credit',
-                'prohibited_if:payment_type,cash',
             ],
             'quantity' => [
                 'required',
