@@ -11,10 +11,16 @@ use App\Domain\Payment\Controllers\PaymentController;
 use App\Domain\PaymentMonitoring\Controllers\PaymentMonitoringController;
 use App\Domain\Notification\Controllers\NotificationController;
 use App\Domain\Dashboard\Controllers\DashboardController;
+use App\Domain\Auth\Controllers\AuthController;
+use App\Http\Controllers\BackupController;
 
+Route::post('/login', [AuthController::class, 'login']);
 
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/logout', [AuthController::class, 'logout']);
+    Route::get('/user', [AuthController::class, 'user']);
 
-Route::apiResource('appliances',ApplianceController::class);
+    Route::apiResource('appliances', ApplianceController::class);
 
 Route::apiResource('storages', StorageController::class);
 
@@ -225,4 +231,12 @@ Route::prefix('dashboard')->group(function () {
             'credits'
         ]
     );
+});
+
+    // Backup
+    Route::prefix('backup')->group(function () {
+        Route::post('/run', [BackupController::class, 'run']);
+        Route::get('/status', [BackupController::class, 'status']);
+    });
+
 });

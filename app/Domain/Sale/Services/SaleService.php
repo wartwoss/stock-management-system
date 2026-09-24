@@ -54,8 +54,14 @@ class SaleService
                     $totalPrice,
                 'payment_type' =>
                     $data['payment_type'],
+                'warranty_months' =>
+                    $data['warranty_months'] ?? null,
                 'sale_date' =>
                     $data['sale_date'],
+                'currency' =>
+                    $data['currency'] ?? 'USD',
+                'exchange_rate_per_100' =>
+                    $data['exchange_rate_per_100'] ?? null,
             ]);
             return $sale->load([
                 'appliance',

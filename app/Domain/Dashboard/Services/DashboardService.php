@@ -136,9 +136,13 @@ class DashboardService
                 (int) $sales->sum('quantity'),
             'total_sales_amount' =>
                 round(
-                    (float) $sales->sum(
-                        'total_price'
-                    ),
+                    (float) $sales->reduce(function ($total, $sale) {
+                        $amount = (float) $sale->total_price;
+                        if ($sale->currency === 'IQD' && $sale->exchange_rate_per_100 > 0) {
+                            $amount = ($amount * 100) / $sale->exchange_rate_per_100;
+                        }
+                        return $total + $amount;
+                    }, 0),
                     2
                 ),
             'cash_sales' =>
@@ -164,22 +168,28 @@ class DashboardService
     public function getCreditSummary(): array
     {
         $outstandingDebt = Credit::query()
-            ->where(
-                'remaining_debt',
-                '>',
-                0
-            )
-            ->sum('remaining_debt');
+            ->where('remaining_debt', '>', 0)
+            ->get()
+            ->reduce(function ($total, $credit) {
+                $amount = (float) $credit->remaining_debt;
+                if ($credit->currency === 'IQD' && $credit->exchange_rate_per_100 > 0) {
+                    $amount = ($amount * 100) / $credit->exchange_rate_per_100;
+                }
+                return $total + $amount;
+            }, 0);
+            
         $monthlyPayments = Payment::query()
-            ->whereYear(
-                'payment_date',
-                now()->year
-            )
-            ->whereMonth(
-                'payment_date',
-                now()->month
-            )
-            ->sum('amount');
+            ->whereYear('payment_date', now()->year)
+            ->whereMonth('payment_date', now()->month)
+            ->get()
+            ->reduce(function ($total, $payment) {
+                $amount = (float) $payment->amount;
+                // Payment inherits credit currency logic. We assume Payment has credit relation or currency field
+                if ($payment->currency === 'IQD' && $payment->exchange_rate_per_100 > 0) {
+                    $amount = ($amount * 100) / $payment->exchange_rate_per_100;
+                }
+                return $total + $amount;
+            }, 0);
         $overdueCredits = Credit::with([
             'customer',
             'sale.appliance',
@@ -215,10 +225,13 @@ class DashboardService
                                 ?->phone_number,
                         'outstanding_debt' =>
                             round(
-                                (float) $credits
-                                    ->sum(
-                                        'remaining_debt'
-                                    ),
+                                (float) $credits->reduce(function ($total, $c) {
+                                    $amount = (float) $c->remaining_debt;
+                                    if ($c->currency === 'IQD' && $c->exchange_rate_per_100 > 0) {
+                                        $amount = ($amount * 100) / $c->exchange_rate_per_100;
+                                    }
+                                    return $total + $amount;
+                                }, 0),
                                 2
                             ),
                         'overdue_credits' =>

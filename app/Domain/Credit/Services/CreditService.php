@@ -86,6 +86,8 @@ class CreditService
                 'next_due_date' =>
                     $data['first_due_date'],
                 'status' => 'active',
+                'currency' => $sale->currency,
+                'exchange_rate_per_100' => $sale->exchange_rate_per_100,
             ]);
             return $credit->load([
                 'sale.appliance',

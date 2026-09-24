@@ -11,6 +11,8 @@ class Payment extends Model
         'credit_id',
         'amount',
         'payment_date',
+        'currency',
+        'exchange_rate_per_100',
     ];
     protected function casts(): array
     {
@@ -18,6 +20,7 @@ class Payment extends Model
             'credit_id' => 'integer',
             'amount' => 'decimal:2',
             'payment_date' => 'date:Y-m-d',
+            'exchange_rate_per_100' => 'decimal:2',
         ];
     }
     public function credit(): BelongsTo

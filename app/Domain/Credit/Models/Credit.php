@@ -24,6 +24,8 @@ class Credit extends Model
         'first_due_date',
         'next_due_date',
         'status',
+        'currency',
+        'exchange_rate_per_100',
     ];
     protected function casts(): array
     {
@@ -38,6 +40,7 @@ class Credit extends Model
             'payments_made' => 'integer',
             'first_due_date' => 'date:Y-m-d',
             'next_due_date' => 'date:Y-m-d',
+            'exchange_rate_per_100' => 'decimal:2',
         ];
     }
     public function sale(): BelongsTo

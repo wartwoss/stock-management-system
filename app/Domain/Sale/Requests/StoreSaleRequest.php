@@ -48,6 +48,20 @@ class StoreSaleRequest extends FormRequest
                 'required',
                 'date',
             ],
+            'currency' => [
+                'nullable',
+                Rule::in(['USD', 'IQD']),
+            ],
+            'exchange_rate_per_100' => [
+                'nullable',
+                'numeric',
+                'min:0',
+            ],
+            'warranty_months' => [
+                'nullable',
+                'integer',
+                'min:0',
+            ],
         ];
     }
 }

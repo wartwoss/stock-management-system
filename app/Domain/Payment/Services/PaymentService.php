@@ -68,6 +68,8 @@ class PaymentService
                     'amount' => $amount,
                     'payment_date' =>
                         $data['payment_date'],
+                    'currency' => $credit->currency,
+                    'exchange_rate_per_100' => $credit->exchange_rate_per_100,
                 ]);
                 $credit->remaining_debt = round(
                     $remainingDebt - $amount,

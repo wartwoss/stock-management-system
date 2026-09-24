@@ -21,8 +21,10 @@ class Sale extends Model
         'quantity',
         'selling_price',
         'total_price',
-        'payment_type',
+        'payment_type', 'warranty_months',
         'sale_date',
+        'currency',
+        'exchange_rate_per_100',
     ];
     protected function casts(): array
     {
@@ -34,6 +36,7 @@ class Sale extends Model
             'selling_price' => 'decimal:2',
             'total_price' => 'decimal:2',
             'sale_date' => 'date:Y-m-d',
+            'exchange_rate_per_100' => 'decimal:2',
         ];
     }
     public function appliance(): BelongsTo
