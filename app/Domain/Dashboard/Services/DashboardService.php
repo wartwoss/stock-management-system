@@ -24,16 +24,13 @@ class DashboardService
     ): array {
         $threshold =
             $filters['low_stock_threshold'] ?? 3;
-        $totalInStock = Inventory::sum(
+        $totalInStock = Inventory::whereHas('appliance')->sum(
             'quantity_in_stock'
         );
-        $totalSold = Inventory::sum(
+        $totalSold = Inventory::whereHas('appliance')->sum(
             'quantity_sold'
         );
-        $lowStock = Inventory::with([
-            'appliance',
-            'storage',
-        ])
+        $lowStock = Inventory::with(['appliance', 'storage'])->whereHas('appliance')
             ->where(
                 'quantity_in_stock',
                 '>',
@@ -45,17 +42,14 @@ class DashboardService
                 $threshold
             )
             ->get();
-        $outOfStock = Inventory::with([
-            'appliance',
-            'storage',
-        ])
+        $outOfStock = Inventory::with(['appliance', 'storage'])->whereHas('appliance')
             ->where(
                 'quantity_in_stock',
                 0
             )
             ->get();
         $byStorage = Storage::with([
-            'inventories.appliance',
+            'inventories' => fn($q) => $q->whereHas('appliance')->with('appliance'),
         ])
             ->get()
             ->map(function ($storage) {
@@ -192,7 +186,7 @@ class DashboardService
             }, 0);
         $overdueCredits = Credit::with([
             'customer',
-            'sale.appliance',
+            'sale.appliance' => fn($q) => $q->withTrashed(),
         ])
             ->where(
                 'remaining_debt',

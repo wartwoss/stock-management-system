@@ -10,10 +10,7 @@ class InventoryService
 {
     public function getAll(): Collection
     {
-        return Inventory::with([
-            'appliance',
-            'storage'
-        ])->get();
+        return Inventory::with(['appliance', 'storage'])->whereHas('appliance')->get();
     }
     public function findById(int $id): Inventory
     {

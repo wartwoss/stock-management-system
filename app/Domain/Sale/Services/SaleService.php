@@ -13,7 +13,7 @@ class SaleService
     public function getAll(): Collection
     {
         return Sale::with([
-            'appliance',
+            'appliance' => fn($q) => $q->withTrashed(),
             'storage',
             'customer',
         ])
@@ -23,7 +23,7 @@ class SaleService
     public function findById(int $id): Sale
     {
         return Sale::with([
-            'appliance',
+            'appliance' => fn($q) => $q->withTrashed(),
             'storage',
             'customer',
         ])
@@ -64,7 +64,7 @@ class SaleService
                     $data['exchange_rate_per_100'] ?? null,
             ]);
             return $sale->load([
-                'appliance',
+                'appliance' => fn($q) => $q->withTrashed(),
                 'storage',
                 'customer',
             ]);

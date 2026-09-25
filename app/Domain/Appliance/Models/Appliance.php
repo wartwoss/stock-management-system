@@ -1,6 +1,7 @@
 <?php
 namespace App\Domain\Appliance\Models;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use App\Domain\Inventory\Models\Inventory;
@@ -10,6 +11,7 @@ use App\Domain\Sale\Models\Sale;
 
 class Appliance extends Model
 {
+    use SoftDeletes;
     protected $table = 'appliances';
     public $timestamps = false;
     protected $fillable = [

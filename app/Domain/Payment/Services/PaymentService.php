@@ -12,7 +12,7 @@ class PaymentService
     {
         return Payment::with([
             'credit.customer',
-            'credit.sale.appliance',
+            'credit.sale.appliance' => fn($q) => $q->withTrashed(),
         ])
             ->orderByDesc('id')
             ->get();
@@ -21,7 +21,7 @@ class PaymentService
     {
         return Payment::with([
             'credit.customer',
-            'credit.sale.appliance',
+            'credit.sale.appliance' => fn($q) => $q->withTrashed(),
         ])->findOrFail($id);
     }
     public function getByCredit(
@@ -102,7 +102,7 @@ class PaymentService
                     ->refresh()
                     ->load([
                         'credit.customer',
-                        'credit.sale.appliance',
+                        'credit.sale.appliance' => fn($q) => $q->withTrashed(),
                     ]);
             }
         );

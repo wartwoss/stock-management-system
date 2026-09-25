@@ -10,7 +10,7 @@ class CreditService
     public function getAll(): Collection
     {
         return Credit::with([
-            'sale.appliance',
+            'sale.appliance' => fn($q) => $q->withTrashed(),
             'customer',
         ])
             ->orderByDesc('id')
@@ -19,7 +19,7 @@ class CreditService
     public function findById(int $id): Credit
     {
         return Credit::with([
-            'sale.appliance',
+            'sale.appliance' => fn($q) => $q->withTrashed(),
             'customer',
         ])->findOrFail($id);
     }
@@ -90,7 +90,7 @@ class CreditService
                 'exchange_rate_per_100' => $sale->exchange_rate_per_100,
             ]);
             return $credit->load([
-                'sale.appliance',
+                'sale.appliance' => fn($q) => $q->withTrashed(),
                 'customer',
             ]);
         });
@@ -142,7 +142,7 @@ class CreditService
                 return $credit
                     ->refresh()
                     ->load([
-                        'sale.appliance',
+                        'sale.appliance' => fn($q) => $q->withTrashed(),
                         'customer',
                     ]);
             }
@@ -198,7 +198,7 @@ class CreditService
         int $id
     ): Credit {
         return Credit::with([
-            'sale.appliance',
+            'sale.appliance' => fn($q) => $q->withTrashed(),
             'customer',
         ])->findOrFail($id);
     }
